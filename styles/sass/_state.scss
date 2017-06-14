@@ -1,0 +1,55 @@
+@import 'variables';
+.countcontrol.s_selectioncontrols{
+  right:0;
+}
+.grid.s_selectionmode{
+  background: $color_gray-200;
+  box-shadow: inset 0 0 100px $color_gray-300;
+  border-color:$color_primary-light;
+}
+.grid_cell.s_cell-selectable{
+  .cell_select{
+    top:0;
+    right:0;
+    background-color:$color_gray-200;
+  }
+}
+.grid_cell.s_cell-selected{
+  border-color:$color_primary;
+  .cell_title {
+    background-color:$color_primary;
+    color:#fff;
+  }
+  .cell_select {
+    background-color:$color_primary;
+    top:0;
+    right:0;
+    .selectable {
+      color:#fff;
+    }
+  }
+}
+.grid_cell:hover {
+  border-color:$color_primary;
+  transform:scale(1.05);
+  .cell_title{
+    bottom:0;
+  }
+  .cell_select{
+    top:0;
+    right:0;
+  }
+}
+.cell_select:hover {
+  .selectable {
+    color:$color_historian-dark;
+  }
+}
+.btn-primary:hover {
+  background-color:$color_primary-dark;
+  border-color:$color_primary-dark;
+}
+.btn-danger:hover{
+  background-color:$color_danger-dark;
+  border-color:$color_danger-dark;
+}

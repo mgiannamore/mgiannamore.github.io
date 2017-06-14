@@ -1,0 +1,81 @@
+/* COLORS */
+
+/*semantic colors*/
+$color_primary          : #7dc142;
+$color_primary-light    : #a5d47c;
+$color_primary-dark     : #649d33;
+
+$color_secondary        : #2b91cf;
+$color_secondary-light  : #67b2df;
+$color_secondary-dark   : #2273a5;
+
+$color_danger           : #bf3030;
+$color_danger-dark      : #962626;
+/*end semantic colors*/
+
+/*brand colors*/
+$color_historian        : #67bd68;
+$color_historian-light  : #9cd49d;
+$color_historian-dark   : #49a84a;
+
+$color_artisan          : #28a6de;
+$color_artisan-light    : #6ac1e8;
+$color_artisan-dark     : #1c87b7;
+/*end brand colors*/
+
+/*grays*/
+$color_gray-100         : #fafafa;
+$color_gray-200         : #f6f6f6;
+$color_gray-300         : #e7e7e7;
+$color_gray-400         : #ccc;
+$color_gray-500         : #888;
+$color_gray-600         : #666;
+$color_gray-700         : #333;
+$color_gray-800         : #222;
+/*end grays*/
+
+/*project root path*/
+$projectroot            : '../..';
+
+/*fonts*/
+@font-face {
+  font-family: 'proxima';
+  font-weight:normal;
+  src: url('#{$projectroot}/fonts/ProximaNova-Reg-webfont.eot'),
+       url('#{$projectroot}/fonts/ProximaNova-Reg-webfont.woff') format('woff'),
+       url('#{$projectroot}/fonts/ProximaNova-Reg-webfont.ttf')  format('truetype'),
+       url('#{$projectroot}/fonts/ProximaNova-Reg-webfont.svg') format('svg');
+}
+@font-face {
+  font-family: 'proxima';
+  font-weight: 300;
+  src: url('#{$projectroot}/fonts/ProximaNova-Light-webfont.eot'),
+       url('#{$projectroot}/fonts/ProximaNova-Light-webfont.woff') format('woff'),
+       url('#{$projectroot}/fonts/ProximaNova-Light-webfont.ttf')  format('truetype'),
+       url('#{$projectroot}/fonts/ProximaNova-Light-webfont.svg') format('svg');
+}
+@font-face {
+  font-family: 'proxima';
+  font-weight: 500;
+  src: url('#{$projectroot}/fonts/ProximaNova-SBold-webfont.eot'),
+       url('#{$projectroot}/fonts/ProximaNova-SBold-webfont.woff') format('woff'),
+       url('#{$projectroot}/fonts/ProximaNova-SBold-webfont.ttf')  format('truetype'),
+       url('#{$projectroot}/fonts/ProximaNova-SBold-webfont.svg') format('svg');
+}
+@font-face {
+  font-family: 'proxima';
+  font-weight: 700;
+  src: url('#{$projectroot}/fonts/ProximaNova-Bold-webfont.eot'),
+       url('#{$projectroot}/fonts/ProximaNova-Bold-webfont.woff') format('woff'),
+       url('#{$projectroot}/fonts/ProximaNova-Bold-webfont.ttf')  format('truetype'),
+       url('#{$projectroot}/fonts/ProximaNova-Bold-webfont.svg') format('svg');
+}
+@font-face {
+  font-family: 'proxima';
+  font-weight: bold;
+  font-style:italic;
+  src: url('#{$projectroot}/fonts/ProximaNova-BoldIt-webfont.eot'),
+       url('#{$projectroot}/fonts/ProximaNova-BoldIt-webfont.woff') format('woff'),
+       url('#{$projectroot}/fonts/ProximaNova-BoldIt-webfont.ttf')  format('truetype'),
+       url('#{$projectroot}/fonts/ProximaNova-BoldIt-webfont.svg') format('svg');
+}
