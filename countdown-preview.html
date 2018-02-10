@@ -1,0 +1,536 @@
+<!Doctype HTML>
+<head>
+  <title>Live Clock</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src=//cdnjs.cloudflare.com/ajax/libs/seedrandom/2.3.10/seedrandom.min.js></script>
+  <style>
+  @font-face {
+    font-family: 'SuffocateFont';
+    src: url("fonts/caslon_antique_pro-webfont.ttf") format("truetype");
+  }
+  body {
+    width:100vw;
+    height:100vh;
+    background:url(img/chair.png) no-repeat center center #010816;
+    background-size:80%;
+    position:relative;
+    margin:0;
+    padding:0;
+    overflow:hidden;
+  }
+  .bg-blacker {
+    width:100vw;
+    height:100vh;
+    background:black;
+    opacity:0.5;
+    position:absolute;
+    top:0;
+    left:0;
+  }
+  .green-chair {
+    width:100vw;
+    height:100vh;
+    background:url(img/green-chair.jpg) repeat-x center bottom #141122;
+    background-size:80%;
+    position:absolute;
+    top:0;
+    left:0;
+    opacity:0;
+  }
+  .clockholder {
+    position:relative;
+    top:50%;
+    height:50px;
+    text-align:center;
+    transform:scale(3);
+    -webkit-transform:scale(3);
+  }
+  .clockholder div, span {
+    font-family:"SuffocateFont", serif;
+    color:#f1f4e3;
+    display:inline-block;
+    font-size:50px;
+    position:absolute;
+    left:0;
+    right:0;
+    margin-left:auto;
+    margin-right:auto;
+    transition:color 0.1s ease-in-out;
+    -webkit-transition:color 0.1s ease-in-out;
+  }
+
+  #divider1 {
+    left:-100px;
+    width:50px;
+    text-align:center;
+  }
+
+  #divider2 {
+    left:100px;
+    width:50px;
+    text-align:center;
+  }
+
+  #hours {
+    width:100px;
+    left:-250px;
+    text-align:right;
+  }
+
+  #seconds {
+    width:100px;
+    left:250px;
+    text-align:left;
+  }
+
+  #minutes {
+    width:100px;
+    text-align:center;
+  }
+
+  .overlay {
+    width:100vw;
+    height:100vh;
+    background:url(img/asfalt-dark.png) repeat top left;
+    position:absolute;
+    top:0;
+    left:0;
+    pointer-events:none;
+  }
+
+  .blur {
+     color: transparent !important;
+     text-shadow: 0 0 5px rgba(241, 244, 227, 1);
+  }
+
+  .chair-flicker {
+    -webkit-animation: chair-flicker 2s ease 1; /* Chrome, Safari 5 */
+       -moz-animation: chair-flicker 2s ease 1; /* Firefox 5-15 */
+         -o-animation: chair-flicker 2s ease 1; /* Opera 12+ */
+            animation: chair-flicker 2s ease 1; /* Chrome, Firefox 16+, */
+  }
+  @keyframes chair-flicker {
+    from { opacity:1; }
+    0.01% { opacity:0; }
+    12%  { opacity:0.8; }
+    12.01% { opacity:0; }
+    39%  { opacity:1; }
+    39.01% { opacity:0; }
+    43%  { opacity:1; }
+    43.01% { opacity:0; }
+    58%  { opacity:0.6; }
+    58.01% { opacity:0; }
+    71%  { opacity:1; }
+    71.01% { opacity:0; }
+    80%  { opacity:1; }
+    80.01% { opacity:0; }
+    82%  { opacity:0.9; }
+    82.01% { opacity:0; }
+    83%  { opacity:1; }
+    83.01% { opacity:0; }
+    90%  { opacity:1; }
+    90.01% { opacity:0; }
+    98%  { opacity:0.3; }
+    98.01% { opacity:0; }
+    99% { opacity:0.4; }
+    to { opacity:0; }
+  }
+  @-webkit-keyframes chair-flicker {
+    from { opacity:1; }
+    0.01% { opacity:0; }
+    12%  { opacity:0.8; }
+    12.01% { opacity:0; }
+    39%  { opacity:1; }
+    39.01% { opacity:0; }
+    43%  { opacity:1; }
+    43.01% { opacity:0; }
+    58%  { opacity:0.6; }
+    58.01% { opacity:0; }
+    71%  { opacity:1; }
+    71.01% { opacity:0; }
+    80%  { opacity:1; }
+    80.01% { opacity:0; }
+    82%  { opacity:0.9; }
+    82.01% { opacity:0; }
+    83%  { opacity:1; }
+    83.01% { opacity:0; }
+    90%  { opacity:1; }
+    90.01% { opacity:0; }
+    98%  { opacity:0.3; }
+    98.01% { opacity:0; }
+    99% { opacity:0.4; }
+    to { opacity:0; }
+  }
+  @-moz-keyframes chair-flicker {
+    from { opacity:1; }
+    0.01% { opacity:0; }
+    12%  { opacity:0.8; }
+    12.01% { opacity:0; }
+    39%  { opacity:1; }
+    39.01% { opacity:0; }
+    43%  { opacity:1; }
+    43.01% { opacity:0; }
+    58%  { opacity:0.6; }
+    58.01% { opacity:0; }
+    71%  { opacity:1; }
+    71.01% { opacity:0; }
+    80%  { opacity:1; }
+    80.01% { opacity:0; }
+    82%  { opacity:0.9; }
+    82.01% { opacity:0; }
+    83%  { opacity:1; }
+    83.01% { opacity:0; }
+    90%  { opacity:1; }
+    90.01% { opacity:0; }
+    98%  { opacity:0.3; }
+    98.01% { opacity:0; }
+    99% { opacity:0.4; }
+    to { opacity:0; }
+  }
+  @-o-keyframes chair-flicker {
+    from { opacity:1; }
+    0.01% { opacity:0; }
+    12%  { opacity:0.8; }
+    12.01% { opacity:0; }
+    39%  { opacity:1; }
+    39.01% { opacity:0; }
+    43%  { opacity:1; }
+    43.01% { opacity:0; }
+    58%  { opacity:0.6; }
+    58.01% { opacity:0; }
+    71%  { opacity:1; }
+    71.01% { opacity:0; }
+    80%  { opacity:1; }
+    80.01% { opacity:0; }
+    82%  { opacity:0.9; }
+    82.01% { opacity:0; }
+    83%  { opacity:1; }
+    83.01% { opacity:0; }
+    90%  { opacity:1; }
+    90.01% { opacity:0; }
+    98%  { opacity:0.3; }
+    98.01% { opacity:0; }
+    99% { opacity:0.4; }
+    to { opacity:0; }
+  }
+
+  .flicker {
+    -webkit-animation: small-flicker 0.3s ease 1; /* Chrome, Safari 5 */
+       -moz-animation: small-flicker 0.3s ease 1; /* Firefox 5-15 */
+         -o-animation: small-flicker 0.3s ease 1; /* Opera 12+ */
+            animation: small-flicker 0.3s ease 1; /* Chrome, Firefox 16+, */
+  }
+  @keyframes small-flicker {
+    from { transform:translateX(-3px); transform:translateY(-1px); }
+    10%  { transform:translateX(3px); transform:translateY(1px); }
+    20%  { transform:translateX(-3px); transform:translateY(-1px); }
+    30%  { transform:translateX(3px); transform:translateY(2px); opacity:0.6; }
+    40%  { transform:translateX(-3px); transform:translateY(-1px); }
+    50%  { transform:translateX(3px); transform:translateY(1px); }
+    60%  { transform:translateX(-3px); transform:translateY(-2px); opacity:0.8; }
+    70%  { transform:translateX(3px); transform:translateY(3px); }
+    80%  { transform:translateX(-3px); transform:translateY(-1px); opacity:0.4 }
+    90%  { transform:translateX(3px); transform:translateY(1px); }
+    to   { transform:translateX(0); transform:translateY(0); opacity:1; animation-timing-function:ease-out; }
+  }
+  @-webkit-keyframes small-flicker {
+    from { -webkit-transform:translateX(-3px); -webkit-transform:translateY(-1px); }
+    10%  { -webkit-transform:translateX(3px); -webkit-transform:translateY(1px); }
+    20%  { -webkit-transform:translateX(-3px); -webkit-transform:translateY(-1px); }
+    30%  { -webkit-transform:translateX(3px); -webkit-transform:translateY(2px); opacity:0.6; }
+    40%  { -webkit-transform:translateX(-3px); -webkit-transform:translateY(-1px); }
+    50%  { -webkit-transform:translateX(3px); -webkit-transform:translateY(1px); }
+    60%  { -webkit-transform:translateX(-3px); -webkit-transform:translateY(-2px); opacity:0.8; }
+    70%  { -webkit-transform:translateX(3px); -webkit-transform:translateY(3px); }
+    80%  { -webkit-transform:translateX(-3px); -webkit-transform:translateY(-1px); opacity:0.4 }
+    90%  { -webkit-transform:translateX(3px); -webkit-transform:translateY(1px); }
+    to   { -webkit-transform:translateX(0); -webkit-transform:translateY(0); opacity:1; animation-timing-function:ease-out; }
+  }
+  @-moz-keyframes small-flicker {
+    from { -moz-transform:translateX(-3px); -moz-transform:translateY(-1px); }
+    10%  { -moz-transform:translateX(3px); -moz-transform:translateY(1px); }
+    20%  { -moz-transform:translateX(-3px); -moz-transform:translateY(-1px); }
+    30%  { -moz-transform:translateX(3px); -moz-transform:translateY(2px); opacity:0.6; }
+    40%  { -moz-transform:translateX(-3px); -moz-transform:translateY(-1px); }
+    50%  { -moz-transform:translateX(3px); -moz-transform:translateY(1px); }
+    60%  { -moz-transform:translateX(-3px); -moz-transform:translateY(-2px); opacity:0.8; }
+    70%  { -moz-transform:translateX(3px); -moz-transform:translateY(3px); }
+    80%  { -moz-transform:translateX(-3px); -moz-transform:translateY(-1px); opacity:0.4 }
+    90%  { -moz-transform:translateX(3px); -moz-transform:translateY(1px); }
+    to   { -moz-transform:translateX(0); -moz-transform:translateY(0); opacity:1; animation-timing-function:ease-out; }
+  }
+  @-o-keyframes small-flicker {
+    from { -o-transform:translateX(-3px); -o-transform:translateY(-1px); }
+    10%  { -o-transform:translateX(3px); -o-transform:translateY(1px); }
+    20%  { -o-transform:translateX(-3px); -o-transform:translateY(-1px); }
+    30%  { -o-transform:translateX(3px); -o-transform:translateY(2px); opacity:0.6; }
+    40%  { -o-transform:translateX(-3px); -o-transform:translateY(-1px); }
+    50%  { -o-transform:translateX(3px); -o-transform:translateY(1px); }
+    60%  { -o-transform:translateX(-3px); -o-transform:translateY(-2px); opacity:0.8; }
+    70%  { -o-transform:translateX(3px); -o-transform:translateY(3px); }
+    80%  { -o-transform:translateX(-3px); -o-transform:translateY(-1px); opacity:0.4 }
+    90%  { -o-transform:translateX(3px); -o-transform:translateY(1px); }
+    to   { -o-transform:translateX(0); -o-transform:translateY(0); opacity:1; animation-timing-function:ease-out; }
+  }
+
+  .clockwise {
+    -webkit-animation: go-clockwise 0.3s ease 1; /* Chrome, Safari 5 */
+       -moz-animation: go-clockwise 0.3s ease 1; /* Firefox 5-15 */
+         -o-animation: go-clockwise 0.3s ease 1; /* Opera 12+ */
+            animation: go-clockwise 0.3s ease 1; /* Chrome, Firefox 16+, */
+  }
+  @-webkit-keyframes go-clockwise {
+      from { -webkit-transform: rotate(0deg) translateX(3px) rotate(0deg); }
+      30%  { opacity:0.6; }
+      40%  { -webkit-transform:translateY(3px); }
+      60%  { opacity:0.8; }
+      80%  { opacity:0.4; }
+      to   { -webkit-transform: rotate(360deg) translateX(3px) rotate(-360deg); }
+  }
+  @-moz-keyframes go-clockwise {
+    from { -moz-transform: rotate(0deg) translateX(3px) rotate(0deg); }
+    30%  { opacity:0.6; }
+    40%  { -moz-transform:translateY(3px); }
+    60%  { opacity:0.8; }
+    80%  { opacity:0.4; }
+    to   { -moz-transform: rotate(360deg) translateX(3px) rotate(-360deg); }
+  }
+  @-o-keyframes go-clockwise {
+    from { -o-transform: rotate(0deg) translateX(3px) rotate(0deg); }
+    30%  { opacity:0.6; }
+    40%  { -o-transform:translateY(3px); }
+    60%  { opacity:0.8; }
+    80%  { opacity:0.4; }
+    to   { -o-transform: rotate(360deg) translateX(3px) rotate(-360deg); }
+  }
+  @keyframes go-clockwise {
+    from { transform: rotate(0deg) translateX(3px) rotate(0deg); }
+    30%  { opacity:0.6; }
+    40%  { transform:translateY(3px); }
+    60%  { opacity:0.8; }
+    80%  { opacity:0.4; }
+    to   { transform: rotate(360deg) translateX(3px) rotate(-360deg); }
+  }
+
+  .counter-clockwise {
+    -webkit-animation: go-counter-clockwise 0.3s ease 1; /* Chrome, Safari 5 */
+       -moz-animation: go-counter-clockwise 0.3s ease 1; /* Firefox 5-15 */
+         -o-animation: go-counter-clockwise 0.3s ease 1; /* Opera 12+ */
+            animation: go-counter-clockwise 0.3s ease 1; /* Chrome, Firefox 16+, */
+  }
+  @-webkit-keyframes go-counter-clockwise {
+      from { -webkit-transform: rotate(0deg) translateX(-3px) rotate(0deg); }
+      30%  { opacity:0.6; }
+      40%  { -webkit-transform:translateY(-2px); }
+      60%  { opacity:0.8; }
+      80%  { opacity:0.4; }
+      90%  { -webkit-transform:translateY(3px); }
+      to   { -webkit-transform: rotate(-360deg) translateX(-3px) rotate(360deg); }
+  }
+  @-moz-keyframes go-counter-clockwise {
+      from { -moz-transform: rotate(0deg) translateX(-3px) rotate(0deg); }
+      30%  { opacity:0.6; }
+      40%  { -moz-transform:translateY(-2px); }
+      60%  { opacity:0.8; }
+      80%  { opacity:0.4; }
+      90%  { -moz-transform:translateY(3px); }
+      to   { -moz-transform: rotate(-360deg) translateX(-3px) rotate(360deg); }
+  }
+  @-o-keyframes go-counter-clockwise {
+      from { -o-transform: rotate(0deg) translateX(-3px) rotate(0deg); }
+      30%  { opacity:0.6; }
+      40%  { -o-transform:translateY(-2px); }
+      60%  { opacity:0.8; }
+      80%  { opacity:0.4; }
+      90%  { -o-transform:translateY(3px); }
+      to   { -o-transform: rotate(-360deg) translateX(-3px) rotate(-60deg); }
+  }
+  @keyframes go-counter-clockwise {
+      from { transform: rotate(0deg) translateX(-3px) rotate(0deg); }
+      30%  { opacity:0.6; }
+      40%  { transform:translateY(-2px); }
+      60%  { opacity:0.8; }
+      80%  { opacity:0.4; }
+      90%  { transform:translateY(3px); }
+      to   { transform: rotate(-360deg) translateX(-3px) rotate(360deg); }
+  }
+
+  .rattler {
+    -webkit-animation: rattle 0.3s ease 1; /* Chrome, Safari 5 */
+       -moz-animation: rattle 0.3s ease 1; /* Firefox 5-15 */
+         -o-animation: rattle 0.3s ease 1; /* Opera 12+ */
+            animation: rattle 0.3s ease 1; /* Chrome, Firefox 16+, */
+  }
+  @-webkit-keyframes rattle {
+    from { -webkit-transform:rotate(360deg); opacity:1; }
+    25%  { -webkit-transform:rotate(6deg); }
+    50%  { -webkit-transform:rotate(-10deg); opacity:0.7; }
+    75%  { -webkit-transform:rotate(-3deg); opacity:0.2; }
+    to   { -webkit-transform:rotate(10deg); }
+  }
+  @-moz-keyframes rattle {
+    from { -moz-transform:rotate(360deg); opacity:1; }
+    25%  { -moz-transform:rotate(6deg); }
+    50%  { -moz-transform:rotate(-10deg); opacity:0.7; }
+    75%  { -moz-transform:rotate(-3deg); opacity:0.2; }
+    to   { -moz-transform:rotate(10deg); }
+  }
+  @-o-keyframes rattle {
+    from { -o-transform:rotate(360deg); opacity:1; }
+    25%  { -o-transform:rotate(6deg); }
+    50%  { -o-transform:rotate(-10deg); opacity:0.7; }
+    75%  { -o-transform:rotate(-3deg); opacity:0.2; }
+    to   { -o-transform:rotate(10deg); }
+  }
+  @keyframes rattle {
+    from { transform:rotate(360deg); opacity:1; }
+    25%  { transform:rotate(6deg); }
+    50%  { transform:rotate(-10deg); opacity:0.7}
+    75%  { transform:rotate(-3deg); opacity:0.2; }
+    to   { transform:rotate(10deg); }
+  }
+  </style>
+</head>
+<body>
+  <div class="bg-blacker">
+
+  </div>
+  <div class="green-chair">
+
+  </div>
+  <div class="clockholder">
+    <div class="clockparts" id="hours">
+
+    </div>
+    <span class="clockparts" id="divider1">
+      :
+    </span>
+    <div class="clockparts" id="minutes">
+
+    </div>
+    <span class="clockparts" id="divider2">
+      :
+    </span>
+    <div class="clockparts" id="seconds">
+
+    </div>
+  </div>
+  <div class="overlay">
+
+  </div>
+  <script>
+
+  function animateClock(randomAnimation) {
+    switch(randomAnimation) {
+      case 0:
+          $('.clockparts').addClass("flicker").addClass("blur");
+          break;
+      case 1:
+          $('.clockparts').addClass("clockwise").addClass("blur");
+          break;
+      case 2:
+          $('.clockparts').addClass("counter-clockwise").addClass("blur");
+          break;
+      case 3:
+          $('.clockparts').addClass("rattler").addClass("blur");
+          break;
+      default:
+          $('.clockparts').addClass("flicker").addClass("blur");
+    };
+    setTimeout(function() {
+      deanimateClock();
+    }, 300);
+  }
+
+  function deanimateClock() {
+    $('.clockparts').attr("class", "clockparts");
+  }
+
+  function animateChair(randomAnimation){
+    switch(randomAnimation) {
+      case 0:
+          $('.green-chair').addClass("chair-flicker"); //animate the chair here
+          break;
+      default:
+          $('.green-chair').addClass("chair-flicker");
+    };
+    setTimeout(function() {
+      deanimateChair();
+    }, 2000);
+  }
+
+  function deanimateChair(){
+    $('.green-chair').removeClass("chair-flicker");
+  }
+
+  function clockController(randomClockAnimationTime) {
+    Math.seedrandom();
+    var newTime = Math.floor((Math.random() * 8000) + 4000); //random time between 6 and 12 seconds
+    var randomAnimation = Math.floor((Math.random() * 3) + 1);
+    setTimeout(function(){
+      animateClock(randomAnimation);
+      clockController(newTime);
+    }, randomClockAnimationTime);
+  };
+
+  function chairController(randomChairAnimationTime) {
+    Math.seedrandom();
+    var newTime = Math.floor((Math.random() * 10000) + 7000); //random time between 6 and 12 seconds
+    var randomAnimation = 0;//random between 0 and 3
+    setTimeout(function(){
+      animateChair(randomAnimation);
+      chairController(newTime);
+    }, randomChairAnimationTime);
+  }
+
+  $(document).ready(function() {
+
+    var countDownDate = new Date("Feb 10, 2018 14:53:00").getTime();
+
+    var clock = function() {
+      // Get todays date and time
+      var now = new Date().getTime();
+
+      // Find the distance between now an the count down date
+      var distance = countDownDate - now;
+
+      // Time calculations for hours, minutes and seconds
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      //populate the clock
+      if (hours < 10) {
+        $('#hours').empty().append("0" + hours);
+      } else {
+        $('#hours').empty().append(hours);
+      }
+      if (minutes < 10) {
+        $('#minutes').empty().append("0" + minutes);
+      } else {
+        $('#minutes').empty().append(minutes);
+      }
+      if (seconds < 10) {
+        $('#seconds').empty().append("0" + seconds);
+      } else {
+        $('#seconds').empty().append(seconds);
+      }
+
+      if (distance < 1000 ) {
+        clearClock();
+        $(location).attr('href', "https://google.com");
+      }
+    };
+
+    var clockInterval = setInterval(clock, 1000); // start the countdown
+    clockController(7000); //animate the clock
+    chairController(10000); //animate the chair
+
+    function clearClock() {
+      clearInterval(clockInterval);
+    }
+
+  });
+
+  </script>
+</body>
